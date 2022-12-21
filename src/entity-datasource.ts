@@ -1,7 +1,7 @@
 import { EntityDataSource, ModelORM } from '@xofttion/clean-architecture';
 import { Injectable } from '@xofttion/dependency-injection';
 import { QueryRunner } from 'typeorm';
-import { CoopplinsTypeormSql } from './database-manager';
+import { CoopplinsTypeormSql } from './sql-manager';
 
 type CallRunner = (runner: QueryRunner) => Promise<void>;
 
