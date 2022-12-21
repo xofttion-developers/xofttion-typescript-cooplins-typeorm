@@ -1,0 +1,49 @@
+{
+  "name": "@xofttion/coopplins-typeorm",
+  "type": "module",
+  "version": "4.0.2",
+  "author": "Daniel Andrés Castillo Pedroza",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "module": "dist/xofttion-coopplins-typeorm.esm.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "jest",
+    "launch": "ts-node index.ts"
+  },
+  "peerDependencies": {
+    "@xofttion/clean-architecture": "^4.0.3",
+    "@xofttion/dependency-injection": "^4.0.1",
+    "@xofttion/utils": "^4.0.3",
+    "dotenv": "^16.0.2",
+    "mysql2": "^2.3.3",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.10"
+  },
+  "devDependencies": {
+    "@types/jest": "^28.1.8",
+    "@types/mocha": "^10.0.0",
+    "jest": "^28.1.3",
+    "ts-jest": "^28.0.7",
+    "tslib": "^2.4.0",
+    "typescript": "^4.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xofttion-developers/xofttion-typescript-coopplins-typeorm.git"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "transform": {
+      "node_modules/variables/.+\\.(j|t)sx?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!variables/.*)"
+    ]
+  }
+}
