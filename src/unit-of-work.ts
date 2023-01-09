@@ -6,22 +6,24 @@ import {
 
 export class TypeormUnitOfWork implements UnitOfWork {
   constructor(
-    private entityDatabase: EntityDatabase,
-    private entityManager: EntityManager
+    private _entityDatabase: EntityDatabase,
+    private _entityManager: EntityManager
   ) {}
 
   public async flush(): Promise<void> {
     try {
-      await this.entityDatabase.connect();
-      await this.entityDatabase.transaction();
+      await this._entityDatabase.connect();
+      await this._entityDatabase.transaction();
 
-      await this.entityManager.flush();
-      
-      await this.entityDatabase.commit();
-    } catch {
-      await this.entityDatabase.rollback();
+      await this._entityManager.flush();
+
+      await this._entityDatabase.commit();
+    } catch (ex) {
+      await this._entityDatabase.rollback();
+
+      throw ex;
     } finally {
-      await this.entityDatabase.disconnect();
+      await this._entityDatabase.disconnect();
     }
   }
 }

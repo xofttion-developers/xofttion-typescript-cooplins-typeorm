@@ -13,27 +13,14 @@ export class TypeormEntityDatabase implements EntityDatabase {
     if (dataSource) {
       const runner = CoopplinsTypeormSql.getRunner();
 
-      if (!dataSource.isInitialized) {
-        await dataSource.initialize();
-      }
-
       if (runner) {
         await runner.connect();
       }
     }
   }
 
-  public async disconnect(full?: boolean): Promise<void> {
-    const dataSource = CoopplinsTypeormSql.getDataSource();
-    const runner = CoopplinsTypeormSql.getRunner();
-
-    if (!runner?.isReleased) {
-      await runner?.release();
-    }
-
-    if (full && dataSource?.isInitialized) {
-      await dataSource?.destroy();
-    }
+  public async disconnect(_: boolean): Promise<void> {
+    await CoopplinsTypeormSql.disconnectRunner();
   }
 
   public async transaction(): Promise<void> {
@@ -57,7 +44,7 @@ export class TypeormEntityDatabase implements EntityDatabase {
   private async _execute(call: CallRunner): Promise<void> {
     const runner = CoopplinsTypeormSql.getRunner();
 
-    if (runner && !runner.isReleased) {
+    if (runner) {
       await call(runner);
     }
   }
