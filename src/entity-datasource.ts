@@ -1,4 +1,8 @@
-import { EntityDataSource, ModelORM } from '@xofttion/clean-architecture';
+import {
+  EntityDataSource,
+  ModelDirty,
+  ModelORM
+} from '@xofttion/clean-architecture';
 import { Injectable } from '@xofttion/dependency-injection';
 import { QueryRunner } from 'typeorm';
 import { CoopplinsTypeormSql } from './sql-manager';
@@ -13,9 +17,9 @@ export class TypeormEntityDataSource implements EntityDataSource {
     });
   }
 
-  public async update(model: ModelORM): Promise<void> {
+  public async update(model: ModelORM, dirty: ModelDirty): Promise<void> {
     await this._execute(async (runner) => {
-      await runner.manager.save(model);
+      await runner.manager.update(model.constructor, { id: model.id }, dirty);
     });
   }
 
@@ -28,7 +32,7 @@ export class TypeormEntityDataSource implements EntityDataSource {
   private async _execute(call: CallRunner): Promise<void> {
     const runner = CoopplinsTypeormSql.getRunner();
 
-    if (runner && !runner.isReleased) {
+    if (runner) {
       await call(runner);
     }
   }

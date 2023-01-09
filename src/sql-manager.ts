@@ -21,6 +21,14 @@ class TypeormSql {
 
     return this._runner;
   }
+
+  public async disconnectRunner(): Promise<void> {
+    if (this._runner) {
+      await this._runner?.release();
+
+      this._runner = undefined;
+    }
+  }
 }
 
 export const CoopplinsTypeormSql = new TypeormSql();
