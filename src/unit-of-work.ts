@@ -1,29 +1,36 @@
-import {
-  EntityDatabase,
-  EntityManager,
-  UnitOfWork
-} from '@xofttion/clean-architecture';
+import { UnitOfWork } from '@xofttion/clean-architecture';
+import { TypeormEntityDatabase } from './entity-database';
+import { TypeormEntityManager } from './entity-manager';
+import { CoopplinsTypeormSql } from './sql-manager';
 
 export class TypeormUnitOfWork implements UnitOfWork {
   constructor(
-    private _entityDatabase: EntityDatabase,
-    private _entityManager: EntityManager
+    private _database: TypeormEntityDatabase,
+    private _manager: TypeormEntityManager
   ) {}
 
   public async flush(): Promise<void> {
-    try {
-      await this._entityDatabase.connect();
-      await this._entityDatabase.transaction();
+    const runner = CoopplinsTypeormSql.createRunner();
 
-      await this._entityManager.flush();
+    if (runner) {
+      try {
+        this._database.setRunner(runner);
+        this._manager.setRunner(runner);
 
-      await this._entityDatabase.commit();
-    } catch (ex) {
-      await this._entityDatabase.rollback();
+        await this._database.connect();
 
-      throw ex;
-    } finally {
-      await this._entityDatabase.disconnect();
+        await this._database.transaction();
+
+        await this._manager.flush();
+
+        await this._database.commit();
+      } catch (ex) {
+        await this._database.rollback();
+
+        throw ex;
+      } finally {
+        await this._database.disconnect();
+      }
     }
   }
 }

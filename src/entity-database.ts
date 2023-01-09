@@ -1,51 +1,30 @@
 import { EntityDatabase } from '@xofttion/clean-architecture';
-import { Injectable } from '@xofttion/dependency-injection';
 import { QueryRunner } from 'typeorm';
-import { CoopplinsTypeormSql } from './sql-manager';
 
-type CallRunner = (runner: QueryRunner) => Promise<void>;
-
-@Injectable()
 export class TypeormEntityDatabase implements EntityDatabase {
-  public async connect(): Promise<void> {
-    const dataSource = CoopplinsTypeormSql.getDataSource();
+  private _runner?: QueryRunner;
 
-    if (dataSource) {
-      const runner = CoopplinsTypeormSql.getRunner();
-
-      if (runner) {
-        await runner.connect();
-      }
-    }
+  public setRunner(runner: QueryRunner): void {
+    this._runner = runner;
   }
 
-  public async disconnect(_: boolean): Promise<void> {
-    await CoopplinsTypeormSql.disconnectRunner();
+  public async connect(): Promise<void> {
+    await this._runner?.connect();
+  }
+
+  public async disconnect(_?: boolean): Promise<void> {
+    await this._runner?.release();
   }
 
   public async transaction(): Promise<void> {
-    await this._execute(async (runner) => {
-      await runner.startTransaction();
-    });
+    await this._runner?.startTransaction();
   }
 
   public async commit(): Promise<void> {
-    await this._execute(async (runner) => {
-      await runner.commitTransaction();
-    });
+    await this._runner?.commitTransaction();
   }
 
   public async rollback(): Promise<void> {
-    await this._execute(async (runner) => {
-      await runner.rollbackTransaction();
-    });
-  }
-
-  private async _execute(call: CallRunner): Promise<void> {
-    const runner = CoopplinsTypeormSql.getRunner();
-
-    if (runner) {
-      await call(runner);
-    }
+    await this._runner?.rollbackTransaction();
   }
 }
