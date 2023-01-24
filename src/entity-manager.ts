@@ -3,11 +3,11 @@ import { QueryRunner } from 'typeorm';
 import { TypeormEntityDataSource } from './entity-datasource';
 
 export class TypeormEntityManager extends EntityManager {
-  constructor(private _typeormEntityDataSource: TypeormEntityDataSource) {
-    super(_typeormEntityDataSource);
+  constructor(private typeormDataSource: TypeormEntityDataSource) {
+    super(typeormDataSource);
   }
 
   public setRunner(runner: QueryRunner): void {
-    this._typeormEntityDataSource.setRunner(runner);
+    this.typeormDataSource.setRunner(runner);
   }
 }

@@ -1,18 +1,18 @@
 import { DataSource, QueryRunner } from 'typeorm';
 
 class TypeormSql {
-  private _dataSource?: DataSource;
+  private dataSource?: DataSource;
 
   public setDataSource(datasource: DataSource): void {
-    this._dataSource = datasource;
+    this.dataSource = datasource;
   }
 
   public getDataSource(): DataSource | undefined {
-    return this._dataSource;
+    return this.dataSource;
   }
 
   public createRunner(): QueryRunner | undefined {
-    return this._dataSource?.createQueryRunner();
+    return this.dataSource?.createQueryRunner();
   }
 }
 
