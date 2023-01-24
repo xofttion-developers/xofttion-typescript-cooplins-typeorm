@@ -1,11 +1,12 @@
 import { UnitOfWork } from '@xofttion/clean-architecture';
+import { zip, firstValueFrom } from 'rxjs';
 import { TypeormEntityDatabase } from './entity-database';
 import { TypeormEntityManager } from './entity-manager';
 import { CoopplinsTypeormSql } from './sql-manager';
 
 export class TypeormUnitOfWork implements UnitOfWork {
   constructor(
-    private _database: TypeormEntityDatabase,
+    private database: TypeormEntityDatabase,
     public readonly manager: TypeormEntityManager
   ) {}
 
@@ -14,23 +15,24 @@ export class TypeormUnitOfWork implements UnitOfWork {
       const runner = CoopplinsTypeormSql.createRunner();
 
       if (runner) {
-        this._database.setRunner(runner);
+        this.database.setRunner(runner);
         this.manager.setRunner(runner);
 
-        await this._database.connect();
-
-        await this._database.transaction();
-
-        await this.manager.flush();
-
-        await this._database.commit();
+        firstValueFrom(
+          zip(
+            this.database.connect(),
+            this.database.transaction(),
+            this.manager.flush(),
+            this.database.commit()
+          )
+        );
       }
     } catch (ex) {
-      await this._database.rollback();
-
-      throw ex;
+      this.database.rollback().then(() => {
+        throw ex;
+      });
     } finally {
-      await this._database.disconnect();
+      this.database.disconnect();
     }
   }
 }

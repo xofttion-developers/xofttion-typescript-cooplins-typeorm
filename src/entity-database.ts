@@ -2,29 +2,29 @@ import { EntityDatabase } from '@xofttion/clean-architecture';
 import { QueryRunner } from 'typeorm';
 
 export class TypeormEntityDatabase implements EntityDatabase {
-  private _runner?: QueryRunner;
+  private runner?: QueryRunner;
 
   public setRunner(runner: QueryRunner): void {
-    this._runner = runner;
+    this.runner = runner;
   }
 
   public async connect(): Promise<void> {
-    await this._runner?.connect();
+    this.runner?.connect();
   }
 
   public async disconnect(_?: boolean): Promise<void> {
-    await this._runner?.release();
+    this.runner?.release();
   }
 
   public async transaction(): Promise<void> {
-    await this._runner?.startTransaction();
+    this.runner?.startTransaction();
   }
 
   public async commit(): Promise<void> {
-    await this._runner?.commitTransaction();
+    this.runner?.commitTransaction();
   }
 
   public async rollback(): Promise<void> {
-    await this._runner?.rollbackTransaction();
+    this.runner?.rollbackTransaction();
   }
 }
