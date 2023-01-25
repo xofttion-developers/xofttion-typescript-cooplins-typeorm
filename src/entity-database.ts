@@ -9,22 +9,22 @@ export class TypeormEntityDatabase implements EntityDatabase {
   }
 
   public async connect(): Promise<void> {
-    this.runner?.connect();
+    await this.runner?.connect();
   }
 
   public async disconnect(_?: boolean): Promise<void> {
-    this.runner?.release();
+    await this.runner?.release();
   }
 
   public async transaction(): Promise<void> {
-    this.runner?.startTransaction();
+    await this.runner?.startTransaction();
   }
 
   public async commit(): Promise<void> {
-    this.runner?.commitTransaction();
+    await this.runner?.commitTransaction();
   }
 
   public async rollback(): Promise<void> {
-    this.runner?.rollbackTransaction();
+    await this.runner?.rollbackTransaction();
   }
 }

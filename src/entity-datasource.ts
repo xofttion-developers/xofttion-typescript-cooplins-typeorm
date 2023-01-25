@@ -13,14 +13,14 @@ export class TypeormEntityDataSource implements EntityDataSource {
   }
 
   public async insert(model: ModelORM): Promise<void> {
-    this.runner?.manager.save(model);
+    await this.runner?.manager.save(model);
   }
 
   public async update(model: ModelORM, dirty: ModelDirty): Promise<void> {
-    this.runner?.manager.update(model.constructor, { id: model.id }, dirty);
+    await this.runner?.manager.update(model.constructor, { id: model.id }, dirty);
   }
 
   public async delete(model: ModelORM): Promise<void> {
-    this.runner?.manager.remove(model);
+    await this.runner?.manager.remove(model);
   }
 }
