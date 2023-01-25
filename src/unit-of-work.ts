@@ -1,5 +1,4 @@
 import { UnitOfWork } from '@xofttion/clean-architecture';
-import { zip, firstValueFrom } from 'rxjs';
 import { TypeormEntityDatabase } from './entity-database';
 import { TypeormEntityManager } from './entity-manager';
 import { CoopplinsTypeormSql } from './sql-manager';
@@ -18,21 +17,17 @@ export class TypeormUnitOfWork implements UnitOfWork {
         this.database.setRunner(runner);
         this.manager.setRunner(runner);
 
-        firstValueFrom(
-          zip(
-            this.database.connect(),
-            this.database.transaction(),
-            this.manager.flush(),
-            this.database.commit()
-          )
-        );
+        await this.database.connect();
+        await this.database.transaction();
+        await this.manager.flush();
+        await this.database.commit();
       }
     } catch (ex) {
-      this.database.rollback().then(() => {
-        throw ex;
-      });
+      await this.database.rollback();
+      
+      throw ex;
     } finally {
-      this.database.disconnect();
+      await this.database.disconnect();
     }
   }
 }
