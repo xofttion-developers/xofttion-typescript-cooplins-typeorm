@@ -1,7 +1,7 @@
 import { UnitOfWork } from '@xofttion/clean-architecture';
 import { TypeormEntityDatabase } from './entity-database';
 import { TypeormEntityManager } from './entity-manager';
-import { CoopplinsTypeormSql } from './sql-manager';
+import { typeormSql } from './sql-manager';
 
 export class TypeormUnitOfWork implements UnitOfWork {
   constructor(
@@ -11,7 +11,7 @@ export class TypeormUnitOfWork implements UnitOfWork {
 
   public async flush(): Promise<void> {
     try {
-      const runner = CoopplinsTypeormSql.createRunner();
+      const runner = typeormSql.createRunner();
 
       if (runner) {
         this.database.setRunner(runner);
