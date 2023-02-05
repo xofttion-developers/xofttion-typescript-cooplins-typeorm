@@ -4,7 +4,9 @@ import {
   ModelHidden,
   Model
 } from '@xofttion/clean-architecture';
-import { QueryRunner } from 'typeorm';
+import { EntityManager, QueryRunner } from 'typeorm';
+
+type ManagerCallback = (_: EntityManager) => Promise<void>;
 
 export class TypeormEntityDataSource implements EntityDataSource {
   private runner?: QueryRunner;
@@ -13,26 +15,38 @@ export class TypeormEntityDataSource implements EntityDataSource {
     this.runner = runner;
   }
 
-  public insert(model: Model): Promise<any> {
-    return this.runner ? this.runner.manager.save(model) : Promise.resolve();
+  public insert(model: Model): Promise<void> {
+    return this.managerCallback((manager) =>
+      manager.save(model).then(() => Promise.resolve())
+    );
   }
 
-  public update(model: Model, dirty: ModelDirty): Promise<any> {
-    return this.runner
-      ? this.runner.manager.update(model.constructor, { id: model.id }, dirty)
-      : Promise.resolve();
+  public update(model: Model, dirty: ModelDirty): Promise<void> {
+    return this.managerCallback((manager) =>
+      manager
+        .update(model.constructor, { id: model.id }, dirty)
+        .then(() => Promise.resolve())
+    );
   }
 
-  public delete(model: Model): Promise<any> {
-    return this.runner ? this.runner.manager.remove(model) : Promise.resolve();
+  public delete(model: Model): Promise<void> {
+    return this.managerCallback((manager) =>
+      manager.remove(model).then(() => Promise.resolve())
+    );
   }
 
   public hidden(model: ModelHidden): Promise<any> {
-    model.hiddenAt = new Date();
-    model.hidden = true;
+    return this.managerCallback((manager) => {
+      model.hiddenAt = new Date();
+      model.hidden = true;
 
-    return this.runner
-      ? this.runner.manager.update(model.constructor, { id: model.id }, model)
-      : Promise.resolve();
+      return manager
+        .update(model.constructor, { id: model.id }, model)
+        .then(() => Promise.resolve());
+    });
+  }
+
+  private managerCallback(callback: ManagerCallback): Promise<void> {
+    return this.runner ? callback(this.runner.manager) : Promise.resolve();
   }
 }

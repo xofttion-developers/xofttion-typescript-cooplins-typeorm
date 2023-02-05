@@ -1,6 +1,8 @@
 import { EntityDatabase } from '@xofttion/clean-architecture';
 import { QueryRunner } from 'typeorm';
 
+type RunnerCallback = (_: QueryRunner) => Promise<void>;
+
 export class TypeormEntityDatabase implements EntityDatabase {
   private runner?: QueryRunner;
 
@@ -9,22 +11,26 @@ export class TypeormEntityDatabase implements EntityDatabase {
   }
 
   public connect(): Promise<void> {
-    return this.runner ? this.runner.connect() : Promise.resolve();
+    return this.runnerCallback((runner) => runner.connect());
   }
 
   public disconnect(_?: boolean): Promise<void> {
-    return this.runner ? this.runner.release() : Promise.resolve();
+    return this.runnerCallback((runner) => runner.release());
   }
 
   public transaction(): Promise<void> {
-    return this.runner ? this.runner.startTransaction() : Promise.resolve();
+    return this.runnerCallback((runner) => runner.startTransaction());
   }
 
   public commit(): Promise<void> {
-    return this.runner ? this.runner.commitTransaction() : Promise.resolve();
+    return this.runnerCallback((runner) => runner.commitTransaction());
   }
 
   public rollback(): Promise<void> {
-    return this.runner ? this.runner.rollbackTransaction() : Promise.resolve();
+    return this.runnerCallback((runner) => runner.rollbackTransaction());
+  }
+
+  private runnerCallback(callback: RunnerCallback): Promise<void> {
+    return this.runner ? callback(this.runner) : Promise.resolve();
   }
 }
