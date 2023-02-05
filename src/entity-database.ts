@@ -8,23 +8,23 @@ export class TypeormEntityDatabase implements EntityDatabase {
     this.runner = runner;
   }
 
-  public async connect(): Promise<void> {
-    await this.runner?.connect();
+  public connect(): Promise<void> {
+    return this.runner ? this.runner.connect() : Promise.resolve();
   }
 
-  public async disconnect(_?: boolean): Promise<void> {
-    await this.runner?.release();
+  public disconnect(_?: boolean): Promise<void> {
+    return this.runner ? this.runner.release() : Promise.resolve();
   }
 
-  public async transaction(): Promise<void> {
-    await this.runner?.startTransaction();
+  public transaction(): Promise<void> {
+    return this.runner ? this.runner.startTransaction() : Promise.resolve();
   }
 
-  public async commit(): Promise<void> {
-    await this.runner?.commitTransaction();
+  public commit(): Promise<void> {
+    return this.runner ? this.runner.commitTransaction() : Promise.resolve();
   }
 
-  public async rollback(): Promise<void> {
-    await this.runner?.rollbackTransaction();
+  public rollback(): Promise<void> {
+    return this.runner ? this.runner.rollbackTransaction() : Promise.resolve();
   }
 }
