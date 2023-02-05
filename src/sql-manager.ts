@@ -16,4 +16,4 @@ class TypeormSql {
   }
 }
 
-export const CoopplinsTypeormSql = new TypeormSql();
+export const typeormSql = new TypeormSql();
