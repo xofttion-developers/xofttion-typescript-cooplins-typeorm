@@ -10,7 +10,7 @@ export class TypeormUnitOfWork implements UnitOfWork {
     public readonly manager: TypeormEntityManager
   ) {}
 
-  public async flush(): Promise<any> {
+  public async flush(): Promise<void> {
     const runner = typeormSql.createRunner();
 
     if (!runner) {
@@ -26,6 +26,7 @@ export class TypeormUnitOfWork implements UnitOfWork {
       () => this.manager.flush(),
       () => this.database.commit()
     ])
+      .then(() => Promise.resolve())
       .catch((ex) => {
         this.database.rollback().finally(() => {
           throw ex;
