@@ -21,7 +21,7 @@
   },
   "peerDependencies": {
     "@xofttion/clean-architecture": "^4.2.8",
-    "@xofttion/utils": "^4.2.1",
+    "@xofttion/utils": "^4.2.4",
     "dotenv": "^16.0.2",
     "reflect-metadata": "^0.1.13"
   },
