@@ -1,8 +1,15 @@
-import { XofttionEntityManager } from '@xofttion/clean-architecture';
+import { EntityManager, XofttionEntityManager } from '@xofttion/clean-architecture';
 import { QueryRunner } from 'typeorm';
 import { TypeormEntityDataSource } from './entity-datasource';
 
-export class TypeormEntityManager extends XofttionEntityManager {
+export interface TypeormEntityManager extends EntityManager {
+  setRunner(runner: QueryRunner): void;
+}
+
+export class XofttionTypeormEntityManager
+  extends XofttionEntityManager
+  implements TypeormEntityManager
+{
   constructor(private typeormDataSource: TypeormEntityDataSource) {
     super(typeormDataSource);
   }

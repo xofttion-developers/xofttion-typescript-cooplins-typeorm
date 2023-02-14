@@ -1,14 +1,18 @@
 import {
-  EntityDataSource,
   ModelDirty,
   ModelHidden,
-  Model
+  Model,
+  EntityDataSource
 } from '@xofttion/clean-architecture';
 import { EntityManager, QueryRunner } from 'typeorm';
 
 type ManagerCallback = (_: EntityManager) => Promise<void>;
 
-export class TypeormEntityDataSource implements EntityDataSource {
+export interface TypeormEntityDataSource extends EntityDataSource {
+  setRunner(runner: QueryRunner): void;
+}
+
+export class XofttionTypeormEntityDataSource implements TypeormEntityDataSource {
   private runner?: QueryRunner;
 
   public setRunner(runner: QueryRunner): void {
