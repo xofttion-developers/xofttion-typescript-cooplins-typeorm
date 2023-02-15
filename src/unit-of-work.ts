@@ -28,7 +28,7 @@ export class TypeormUnitOfWork implements UnitOfWork {
     ])
       .then(() => Promise.resolve())
       .catch((ex) => {
-        this.database.rollback().finally(() => {
+        return this.database.rollback().finally(() => {
           throw ex;
         });
       })
