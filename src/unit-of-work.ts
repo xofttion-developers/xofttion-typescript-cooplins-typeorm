@@ -10,7 +10,7 @@ export class TypeormUnitOfWork implements UnitOfWork {
     public readonly manager: TypeormEntityManager
   ) {}
 
-  public async flush(): Promise<void> {
+  public flush(): Promise<void> {
     const runner = typeormSql.createRunner();
 
     if (!runner) {
