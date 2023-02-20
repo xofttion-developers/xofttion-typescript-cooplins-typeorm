@@ -1,4 +1,10 @@
-import { DataSource, QueryRunner } from 'typeorm';
+import {
+  DataSource,
+  EntityTarget,
+  ObjectLiteral,
+  QueryRunner,
+  Repository
+} from 'typeorm';
 
 class TypeormSql {
   private dataSource?: DataSource;
@@ -13,6 +19,12 @@ class TypeormSql {
 
   public createRunner(): QueryRunner | undefined {
     return this.dataSource?.createQueryRunner();
+  }
+
+  public getRepository<T extends ObjectLiteral>(
+    target: EntityTarget<T>
+  ): Repository<T> | undefined {
+    return this.dataSource?.getRepository<T>(target);
   }
 }
 
