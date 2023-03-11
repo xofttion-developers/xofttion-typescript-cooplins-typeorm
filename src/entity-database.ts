@@ -3,8 +3,8 @@ import { QueryRunner } from 'typeorm';
 
 type RunnerCallback = (_: QueryRunner) => Promise<void>;
 
-export interface TypeormEntityDatabase extends EntityDatabase {
-  setRunner(runner: QueryRunner): void;
+export abstract class TypeormEntityDatabase extends EntityDatabase {
+  abstract setRunner(runner: QueryRunner): void;
 }
 
 export class XofttionTypeormEntityDatabase implements TypeormEntityDatabase {

@@ -8,8 +8,8 @@ import { EntityManager, QueryRunner } from 'typeorm';
 
 type ManagerCallback = (_: EntityManager) => Promise<void>;
 
-export interface TypeormEntityDataSource extends EntityDataSource {
-  setRunner(runner: QueryRunner): void;
+export abstract class TypeormEntityDataSource extends EntityDataSource {
+  abstract setRunner(runner: QueryRunner): void;
 }
 
 export class XofttionTypeormEntityDataSource implements TypeormEntityDataSource {

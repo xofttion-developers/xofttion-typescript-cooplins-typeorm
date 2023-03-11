@@ -2,8 +2,8 @@ import { EntityManager, XofttionEntityManager } from '@xofttion/clean-architectu
 import { QueryRunner } from 'typeorm';
 import { TypeormEntityDataSource } from './entity-datasource';
 
-export interface TypeormEntityManager extends EntityManager {
-  setRunner(runner: QueryRunner): void;
+export abstract class TypeormEntityManager extends EntityManager {
+  abstract setRunner(runner: QueryRunner): void;
 }
 
 export class XofttionTypeormEntityManager
