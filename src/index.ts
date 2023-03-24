@@ -3,4 +3,4 @@ export * from './entity-datasource';
 export * from './entity-manager';
 export * from './sql-manager';
 export * from './transaction';
-export * from './unit-of-work';
+export * from './persistent-unit';

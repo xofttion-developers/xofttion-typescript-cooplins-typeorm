@@ -1,10 +1,10 @@
-import { UnitOfWork } from '@xofttion/clean-architecture';
+import { PersistentUnit } from '@xofttion/clean-architecture';
 import { promisesZip } from '@xofttion/utils';
 import { TypeormEntityDatabase } from './entity-database';
 import { TypeormEntityManager } from './entity-manager';
 import { typeormSql } from './sql-manager';
 
-export class TypeormUnitOfWork implements UnitOfWork {
+export class TypeormPersistentUnit implements PersistentUnit {
   constructor(
     private database: TypeormEntityDatabase,
     public readonly manager: TypeormEntityManager
