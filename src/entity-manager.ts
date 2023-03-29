@@ -1,6 +1,6 @@
 import { EntityManager, XofttionEntityManager } from '@xofttion/clean-architecture';
 import { QueryRunner } from 'typeorm';
-import { TypeormEntityDataSource } from './entity-datasource';
+import { TypeormEntityDataSource } from './datasource';
 
 export abstract class TypeormEntityManager extends EntityManager {
   abstract setRunner(runner: QueryRunner): void;
