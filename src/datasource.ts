@@ -2,7 +2,8 @@ import {
   ModelDirty,
   ModelHidden,
   Model,
-  EntityDataSource
+  EntityDataSource,
+  Procedure
 } from '@xofttion/clean-architecture';
 import { EntityManager, QueryRunner } from 'typeorm';
 
@@ -39,7 +40,7 @@ export class XofttionTypeormEntityDataSource implements TypeormEntityDataSource 
     );
   }
 
-  public hidden(model: ModelHidden): Promise<any> {
+  public hidden(model: ModelHidden): Promise<void> {
     return this.managerCallback((manager) => {
       model.hiddenAt = new Date();
       model.hidden = true;
@@ -48,6 +49,10 @@ export class XofttionTypeormEntityDataSource implements TypeormEntityDataSource 
         .update(model.constructor, { id: model.id }, model)
         .then(() => Promise.resolve());
     });
+  }
+
+  public procedure(procedure: Procedure): Promise<void> {
+    return this.managerCallback((manager) => procedure.execute(manager));
   }
 
   private managerCallback(callback: ManagerCallback): Promise<void> {

@@ -1,5 +1,5 @@
-export * from './entity-database';
-export * from './entity-datasource';
+export * from './database';
+export * from './datasource';
 export * from './entity-manager';
 export * from './sql-manager';
 export * from './transaction';

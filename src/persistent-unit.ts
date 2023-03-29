@@ -1,6 +1,6 @@
 import { PersistentUnit } from '@xofttion/clean-architecture';
 import { promisesZip } from '@xofttion/utils';
-import { TypeormEntityDatabase } from './entity-database';
+import { TypeormEntityDatabase } from './database';
 import { TypeormEntityManager } from './entity-manager';
 import { typeormSql } from './sql-manager';
 
