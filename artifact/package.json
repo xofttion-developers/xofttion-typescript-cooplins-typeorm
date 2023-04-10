@@ -8,10 +8,11 @@
   "typings": "index.d.ts",
   "module": "xofttion-coopplins-typeorm.esm.js",
   "scripts": {
-    "publish": "npm run build && cd artifact && npm publish",
     "build": "tsc -p tsconfig.json",
     "test": "jest",
     "launch": "ts-node index.ts"
+  },
+  "dependencies": {
   },
   "peerDependencies": {
     "@xofttion/clean-architecture": "^4.9.6",
