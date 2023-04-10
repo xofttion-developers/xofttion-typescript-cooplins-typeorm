@@ -13,17 +13,17 @@ class TypeormSql {
     this.dataSource = datasource;
   }
 
-  public getDataSource(): DataSource | undefined {
+  public getDataSource(): Undefined<DataSource> {
     return this.dataSource;
   }
 
-  public createRunner(): QueryRunner | undefined {
+  public createRunner(): Undefined<QueryRunner> {
     return this.dataSource?.createQueryRunner();
   }
 
   public getRepository<T extends ObjectLiteral>(
     target: EntityTarget<T>
-  ): Repository<T> | undefined {
+  ): Undefined<Repository<T>> {
     return this.dataSource?.getRepository<T>(target);
   }
 }
