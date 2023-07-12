@@ -19,9 +19,9 @@ export function transaction<T = unknown>(
     .then(([_c, _t, result]) => {
       return result as T;
     })
-    .catch((ex) => {
+    .catch((error) => {
       return runner.rollbackTransaction().finally(() => {
-        throw ex;
+        throw error;
       });
     })
     .finally(() => {
@@ -47,10 +47,10 @@ export async function transactionAsync<T = unknown>(
     await runner.commitTransaction();
 
     return result;
-  } catch (ex) {
+  } catch (error) {
     await runner.rollbackTransaction();
 
-    throw ex;
+    throw error;
   } finally {
     await runner.release();
   }

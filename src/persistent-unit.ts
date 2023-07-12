@@ -27,9 +27,9 @@ export class TypeormPersistentUnit implements PersistentUnit {
       () => this.database.commit()
     ])
       .then(() => Promise.resolve())
-      .catch((ex) => {
+      .catch((error) => {
         return this.database.rollback().finally(() => {
-          throw ex;
+          throw error;
         });
       })
       .finally(() => {
