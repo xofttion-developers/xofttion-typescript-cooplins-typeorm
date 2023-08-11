@@ -1,7 +1,7 @@
 import { EntityDatabase } from '@xofttion/clean-architecture';
 import { QueryRunner } from 'typeorm';
 
-type RunnerCallback = (_: QueryRunner) => Promise<void>;
+type RunnerCallback = (runner: QueryRunner) => Promise<void>;
 
 export abstract class TypeormEntityDatabase extends EntityDatabase {
   abstract setRunner(runner: QueryRunner): void;

@@ -50,10 +50,10 @@ export class TypeormPersistentUnit implements PersistentUnit {
         await this.manager.flushAsync();
         await this.database.commit();
       }
-    } catch (ex) {
+    } catch (error) {
       await this.database.rollback();
 
-      throw ex;
+      throw error;
     } finally {
       await this.database.disconnect();
     }

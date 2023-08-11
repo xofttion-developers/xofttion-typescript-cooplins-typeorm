@@ -7,7 +7,7 @@ import {
 } from '@xofttion/clean-architecture';
 import { EntityManager, QueryRunner } from 'typeorm';
 
-type ManagerCallback = (_: EntityManager) => Promise<void>;
+type ManagerCallback = (entities: EntityManager) => Promise<void>;
 
 export abstract class TypeormEntityDataSource extends EntityDataSource {
   abstract setRunner(runner: QueryRunner): void;
@@ -26,11 +26,13 @@ export class XofttionTypeormEntityDataSource implements TypeormEntityDataSource 
     );
   }
 
-  public update(model: Model, dirty: ModelDirty): Promise<void> {
+  public update(model: Model, dirty?: ModelDirty): Promise<void> {
     return this.managerCallback((manager) =>
-      manager
-        .update(model.constructor, { id: model.id }, dirty)
-        .then(() => Promise.resolve())
+      dirty
+        ? manager
+            .update(model.constructor, { id: model.id }, dirty)
+            .then(() => Promise.resolve())
+        : manager.save(model).then(() => Promise.resolve())
     );
   }
 

@@ -1,7 +1,7 @@
 {
   "name": "@xofttion/coopplins-typeorm",
   "type": "commonjs",
-  "version": "4.9.11",
+  "version": "4.9.12",
   "author": "Daniel Andrés Castillo Pedroza",
   "license": "MIT",
   "main": "index.js",
@@ -15,8 +15,8 @@
     "publish": "npm run clean && npm run build && cd artifact && npm publish"
   },
   "dependencies": {
-    "@xofttion/clean-architecture": "^4.9.12",
-    "@xofttion/utils": "^4.9.29",
+    "@xofttion/clean-architecture": "^4.9.14",
+    "@xofttion/utils": "^4.9.31",
     "dotenv": "^16.0.2",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
